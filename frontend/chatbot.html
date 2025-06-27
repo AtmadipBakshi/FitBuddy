@@ -21,7 +21,51 @@
     </form>
   </div>
 
-  <script src="chatbot.js"></script>
+  <script>
+    document.getElementById("chat-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const inputField = document.getElementById("user-input");
+      const message = inputField.value.trim();
+      const chatBox = document.getElementById("chat-box");
+
+      if (!message) return;
+
+      // Show user message
+      const userMsg = document.createElement("div");
+      userMsg.className = "user-message";
+      userMsg.innerText = message;
+      chatBox.appendChild(userMsg);
+
+      // Clear input
+      inputField.value = "";
+
+      // Show typing...
+      const botMsg = document.createElement("div");
+      botMsg.className = "bot-message";
+      botMsg.innerText = "Typing...";
+      chatBox.appendChild(botMsg);
+
+      // Scroll down
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      try {
+        const response = await fetch("https://fitbuddy-backend-lvl5.onrender.com/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message: message })
+        });
+
+        const data = await response.json();
+        botMsg.innerText = data.reply || "Sorry, I didn’t get that.";
+      } catch (error) {
+        botMsg.innerText = "Error contacting the bot.";
+      }
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+    });
+  </script>
 </body>
 </html>
-
