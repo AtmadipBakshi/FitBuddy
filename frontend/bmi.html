@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitBuddy | Body Info</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --bg-dark: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      --bg-light: linear-gradient(to right, #e0eafc, #cfdef3);
+      --text-dark: #ffffff;
+      --text-light: #000000;
+      --glass-dark: rgba(255, 255, 255, 0.1);
+      --glass-light: rgba(255, 255, 255, 0.4);
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-dark);
+      transition: background 0.3s ease, color 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    body.light-mode {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    .toggle-mode {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .bmi-container {
+      background: var(--glass-dark);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      width: 90%;
+      max-width: 450px;
+      text-align: center;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+      animation: fadeIn 0.8s ease;
+    }
+
+    body.light-mode .bmi-container {
+      background: var(--glass-light);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .bmi-logo {
+      width: 120px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 6px #00c6ff);
+    }
+
+    .bmi-title {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    .gender-selection {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .gender-img {
+      width: 90px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 2px solid transparent;
+    }
+
+    .gender-img.selected {
+      box-shadow: 0 0 12px #00c6ff;
+      border-color: #00c6ff;
+    }
+
+    .input-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    .bmi-result {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    #bmi-continue {
+      padding: 10px 20px;
+      background: #00c6ff;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      font-size: 1rem;
+      border-radius: 8px;
+      margin-top: 20px;
+      display: none;
+      cursor: pointer;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #000;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 1s linear infinite;
+      margin-left: 8px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 500px) {
+      .bmi-title {
+        font-size: 1.5rem;
+      }
+
+      .gender-img {
+        width: 75px;
+      }
+
+      .bmi-logo {
+        width: 100px;
+      }
+    }
+  </style>
+</head>
+<body class="bmi-body">
+  <button class="toggle-mode" onclick="toggleMode()">🌙</button>
+
+  <div class="bmi-container">
+    <!-- Logo -->
+    <img src="assets/your_logo.png.svg" alt="FitBuddy Logo" class="bmi-logo" />
+
+    <h2 class="bmi-title">Tell us about you</h2>
+
+    <!-- Gender Selection -->
+    <div class="gender-selection">
+      <img src="assets/male.png" alt="Male" id="male" class="gender-img" />
+      <img src="assets/female.png" alt="Female" id="female" class="gender-img" />
+    </div>
+
+    <!-- Input Form -->
+    <form id="bmi-form">
+      <div class="input-fields">
+        <input type="number" id="height" placeholder="Height (cm)" required />
+        <input type="number" id="weight" placeholder="Weight (kg)" required />
+      </div>
+
+      <!-- BMI Result -->
+      <div id="bmi-result" class="bmi-result"></div>
+    </form>
+
+    <!-- Continue Button -->
+    <button id="bmi-continue">
+      <span class="btn-text">Continue</span>
+      <span class="spinner" style="display: none;"></span>
+    </button>
+  </div>
+
+  <script>
+    let selectedGender = null;
+    let dark = true;
+
+    // Gender selection
+    document.getElementById("male").onclick = function () {
+      selectedGender = "male";
+      this.classList.add("selected");
+      document.getElementById("female").classList.remove("selected");
+    };
+    document.getElementById("female").onclick = function () {
+      selectedGender = "female";
+      this.classList.add("selected");
+      document.getElementById("male").classList.remove("selected");
+    };
+
+    const heightInput = document.getElementById("height");
+    const weightInput = document.getElementById("weight");
+    const bmiResult = document.getElementById("bmi-result");
+    const continueBtn = document.getElementById("bmi-continue");
+    const spinner = document.querySelector(".spinner");
+    const btnText = document.querySelector(".btn-text");
+
+    // Auto-update BMI on input
+    heightInput.addEventListener("input", handleBMI);
+    weightInput.addEventListener("input", handleBMI);
+
+    function handleBMI() {
+      const height = parseFloat(heightInput.value);
+      const weight = parseFloat(weightInput.value);
+
+      if (!selectedGender || isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+        bmiResult.textContent = "";
+        continueBtn.style.display = "none";
+        return;
+      }
+
+      const heightInM = height / 100;
+      const bmi = (weight / (heightInM * heightInM)).toFixed(1);
+
+      let category = "";
+      if (bmi < 18.5) category = "Underweight";
+      else if (bmi < 24.9) category = "Healthy";
+      else category = "Overweight";
+
+      bmiResult.textContent = `Your BMI is ${bmi} (${category})`;
+      continueBtn.style.display = "inline-block";
+
+      localStorage.setItem("bmi", bmi);
+      localStorage.setItem("bmiCategory", category);
+      localStorage.setItem("gender", selectedGender);
+      localStorage.setItem("height", height);
+      localStorage.setItem("weight", weight);
+    }
+
+    // Continue → go to chat options
+    continueBtn.onclick = () => {
+      btnText.style.display = "none";
+      spinner.style.display = "inline-block";
+
+      setTimeout(() => {
+        window.location.href = "chat-options.html";
+      }, 1500);
+    };
+
+    // Dark/Light toggle
+    function toggleMode() {
+      document.body.classList.toggle("light-mode");
+      const btn = document.querySelector(".toggle-mode");
+      dark = !dark;
+      btn.innerText = dark ? "🌙" : "☀️";
+    }
+  </script>
+</body>
+</html>

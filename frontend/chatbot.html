@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitBuddy Chat</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="chat-body">
+  <div class="chat-container">
+    <img src="assets/bot-logo.png" alt="FitBuddy Logo" class="chat-logo-glow" />
+    <h1 class="chat-title">Talk to <span>FitBuddy</span></h1>
+
+    <div id="chat-box" class="chatbox custom-scrollbar">
+      <div class="bot-message">👋 Hello! Ask me anything about workouts, nutrition, or motivation.</div>
+    </div>
+
+    <form id="chat-form" class="chat-form">
+      <input type="text" id="user-input" placeholder="Type your message..." required />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script src="chatbot.js"></script>
+</body>
+</html>
+

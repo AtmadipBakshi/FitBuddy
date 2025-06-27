@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weekly Workout Planner</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 60px;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+      max-width: 850px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+      color: #ddd;
+    }
+
+    select, button {
+      padding: 12px 16px;
+      margin: 10px 5px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: none;
+      background: #fff;
+      color: #333;
+    }
+
+    .pdf-btn {
+      background: #00f0ff;
+      font-weight: bold;
+      color: #000;
+      box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff77;
+      transition: 0.3s;
+    }
+
+    .pdf-btn:hover {
+      transform: scale(1.05);
+      background: #00d8ff;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 2rem;
+      border-collapse: collapse;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    th, td {
+      border: 1px solid #00f0ff66;
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: rgba(0, 240, 255, 0.2);
+      color: #fff;
+    }
+
+    td {
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📅 Weekly Workout Planner</h1>
+    <p>Select your goal and intensity to generate your 7-day plan!</p>
+
+    <select id="goal">
+      <option value="muscle">Build Muscle</option>
+      <option value="fat">Burn Fat</option>
+      <option value="cardio">Cardio Endurance</option>
+      <option value="home">Home Workouts</option>
+    </select>
+
+    <select id="intensity">
+      <option value="beginner">Beginner</option>
+      <option value="intermediate">Intermediate</option>
+      <option value="advanced">Advanced</option>
+    </select>
+
+    <br />
+    <button onclick="generatePlan()">Generate Plan</button>
+    <button onclick="downloadPDF()" class="pdf-btn">📄 Download as PDF</button>
+
+    <div id="plan-output"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    const planTemplates = {
+      muscle: {
+        beginner: ["Upper Body", "Lower Body", "Rest", "Push Day", "Pull Day", "Rest", "Full Body"],
+        intermediate: ["Push", "Pull", "Legs", "Rest", "Push", "Pull", "Legs"],
+        advanced: ["Chest & Triceps", "Back & Biceps", "Legs", "Shoulders", "Arms", "Rest", "Full Body"]
+      },
+      fat: {
+        beginner: ["HIIT 20min", "Walk 30min", "Rest", "HIIT 15min", "Yoga", "Rest", "Light Jog"],
+        intermediate: ["HIIT", "Strength + Cardio", "Rest", "Circuit", "Walk", "Pilates", "Stretching"],
+        advanced: ["HIIT + Core", "Strength Circuit", "HIIT", "Cardio Endurance", "Rest", "HIIT", "Yoga"]
+      },
+      cardio: {
+        beginner: ["Walk", "Cycle", "Rest", "Walk", "Stretching", "Jog", "Rest"],
+        intermediate: ["Jog", "Cycle 45min", "HIIT", "Rest", "Jog + Core", "Stretching", "Run"],
+        advanced: ["Sprint Intervals", "Run 5km", "Cycle 60min", "HIIT", "Rest", "Run + Core", "Endurance Ride"]
+      },
+      home: {
+        beginner: ["Bodyweight Circuit", "Rest", "Core Workout", "Yoga", "Rest", "Leg Day", "Stretching"],
+        intermediate: ["HIIT", "Push-Ups + Core", "Rest", "Legs + Glutes", "Yoga", "HIIT", "Upper Body"],
+        advanced: ["HIIT", "Advanced Bodyweight", "Core & Plyo", "Rest", "Full Body Burn", "Power Yoga", "Leg Day"]
+      }
+    };
+
+    function generatePlan() {
+      const goal = document.getElementById("goal").value;
+      const intensity = document.getElementById("intensity").value;
+      const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+      const plan = planTemplates[goal][intensity];
+
+      let tableHTML = `<table id="plan-table"><tr><th>Day</th><th>Workout</th><th>Duration</th></tr>`;
+      for (let i = 0; i < 7; i++) {
+        const isRest = plan[i].toLowerCase().includes("rest");
+        tableHTML += `<tr>
+          <td>${days[i]}</td>
+          <td>${plan[i]}</td>
+          <td>${isRest ? "—" : intensity === "beginner" ? "20-30 min" : intensity === "intermediate" ? "30-45 min" : "45-60 min"}</td>
+        </tr>`;
+      }
+      tableHTML += `</table>`;
+
+      document.getElementById("plan-output").innerHTML = tableHTML;
+    }
+
+    function downloadPDF() {
+      const element = document.getElementById("plan-table");
+      if (!element) return alert("Please generate a plan first!");
+      html2pdf().from(element).set({ filename: "Workout_Plan.pdf" }).save();
+    }
+  </script>
+</body>
+</html>

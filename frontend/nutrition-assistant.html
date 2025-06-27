@@ -1,0 +1,77 @@
+<!-- nutrition-assistant.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Nutrition Assistant</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 2rem;
+    }
+    h1 { color: #00ffcc; }
+    .input-box, .result-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      margin: 1rem auto;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+    }
+    input[type="text"], button {
+      padding: 0.8rem;
+      margin-top: 1rem;
+      width: 90%;
+      max-width: 400px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background-color: #00ffcc;
+      color: #000;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #00ccb3;
+    }
+  </style>
+</head>
+<body>
+  <h1>🍎 Smart Nutrition Assistant</h1>
+  <p>Enter your meal and let FitBuddy analyze it!</p>
+  <div class="input-box">
+    <input type="text" id="mealInput" placeholder="e.g. 2 eggs, 1 toast, 1 banana">
+    <button onclick="analyzeMeal()">Analyze Nutrition</button>
+  </div>
+
+  <div class="result-box" id="nutritionOutput">
+    <!-- Results will be inserted here -->
+  </div>
+
+  <script>
+    function analyzeMeal() {
+      const meal = document.getElementById("mealInput").value;
+      if (!meal.trim()) return alert("Please enter your meal!");
+
+      // Fake analysis for now (later connect to Nutritionix or Edamam)
+      const resultBox = document.getElementById("nutritionOutput");
+      resultBox.innerHTML = `
+        <h3>Nutrition Breakdown</h3>
+        <p><strong>Calories:</strong> 420 kcal</p>
+        <p><strong>Protein:</strong> 21g</p>
+        <p><strong>Carbs:</strong> 35g</p>
+        <p><strong>Fats:</strong> 18g</p>
+        <p><em>Want a more personalized breakdown? Connect with the chatbot.</em></p>
+      `;
+    }
+  </script>
+</body>
+</html>

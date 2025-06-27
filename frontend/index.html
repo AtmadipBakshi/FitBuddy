@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitBuddy | Welcome</title>
+  <meta name="description" content="FitBuddy - Your AI-powered fitness companion." />
+  <meta name="theme-color" content="#facc15" />
+  <link rel="icon" href="assets/favicon.ico" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    body.index-body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #1e1e2f, #2c2c3a);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 50px;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    body.light-mode {
+      background: linear-gradient(to right, #f9f9f9, #e0e0e0);
+      color: #111;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: 2px solid #facc15;
+      color: #facc15;
+      padding: 6px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+
+    .index-wrapper {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 20px;
+      padding: 50px 30px 30px;
+    }
+
+    .index-hero {
+      width: 180px;
+      max-width: 60%;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 10px #facc15);
+      transition: filter 0.4s ease;
+    }
+
+    body.light-mode .index-hero {
+      filter: drop-shadow(0 0 6px #fcd34d);
+    }
+
+    .index-title {
+      font-size: 2.8rem;
+      margin: 0;
+      color: #facc15;
+      transition: all 0.4s ease;
+    }
+
+    body.light-mode .index-title {
+      color: #f59e0b;
+    }
+
+    .index-subtitle {
+      font-size: 1.1rem;
+      color: #ccc;
+      margin-bottom: 20px;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .index-subtitle {
+      color: #444;
+    }
+
+    .index-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .index-buttons button {
+      padding: 14px 20px;
+      font-size: 1.1rem;
+      background: #facc15;
+      color: #111;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .index-buttons button:hover {
+      transform: scale(1.03);
+      background-color: #ffcc00;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .footer-name {
+      margin-top: 25px;
+      font-size: 0.9rem;
+      color: #999;
+      transition: color 0.3s ease;
+    }
+
+    body.light-mode .footer-name {
+      color: #666;
+    }
+
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 1s ease-in-out forwards;
+    }
+
+    .fade-in-delay-1 { animation-delay: 0.2s; }
+    .fade-in-delay-2 { animation-delay: 0.4s; }
+    .fade-in-delay-3 { animation-delay: 0.6s; }
+    .fade-in-delay-4 { animation-delay: 0.8s; }
+    .fade-in-delay-5 { animation-delay: 1s; }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .index-title {
+        font-size: 2rem;
+      }
+      .index-hero {
+        width: 140px;
+      }
+    }
+  </style>
+</head>
+
+<body class="index-body">
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark/Light Mode">🌙</button>
+
+  <!-- Content -->
+  <div class="index-wrapper">
+    <!-- Hero Image -->
+    <img src="assets/fitness-hero.png.svg" alt="Fitness Hero" class="index-hero fade-in fade-in-delay-1" />
+
+    <!-- Title -->
+    <h1 class="index-title">Welcome to FitBuddy</h1>
+
+    <!-- Subtitle -->
+    <p class="index-subtitle fade-in fade-in-delay-3">Your AI-powered fitness assistant</p>
+
+    <!-- Buttons -->
+    <div class="index-buttons fade-in fade-in-delay-4">
+      <button onclick="location.href='login.html'">Login</button>
+      <button onclick="location.href='signup.html'">Sign Up</button>
+      <button onclick="location.href='bmi.html'">Continue Without Login</button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-name fade-in fade-in-delay-5"> by Atmadip Bakshi</div>
+  </div>
+
+  <!-- JS -->
+  <script>
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.body;
+    let darkMode = true;
+
+    if (localStorage.getItem("theme") === "light") {
+      body.classList.add("light-mode");
+      themeToggle.textContent = "☀️";
+      darkMode = false;
+    }
+
+    themeToggle.addEventListener("click", () => {
+      darkMode = !darkMode;
+      body.classList.toggle("light-mode");
+      themeToggle.textContent = darkMode ? "🌙" : "☀️";
+      localStorage.setItem("theme", darkMode ? "dark" : "light");
+    });
+  </script>
+</body>
+</html>

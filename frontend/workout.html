@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Workout Options | FitBuddy</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #1d2671, #c33764);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .logo {
+      width: 100px;
+      margin-bottom: 10px;
+    }
+
+    .header {
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    p {
+      margin-top: 8px;
+      font-size: 1rem;
+      color: #ddd;
+    }
+
+    .workout-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      max-width: 600px;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    a.btn {
+      display: inline-block;
+      text-decoration: none;
+      text-align: center;
+      padding: 15px;
+      font-size: 1rem;
+      font-weight: 600;
+      background-color: #111;
+      color: white;
+      border: 2px solid #00f0ff;
+      border-radius: 10px;
+      transition: transform 0.2s ease, background-color 0.2s;
+    }
+
+    a.btn:hover {
+      background-color: #00f0ff;
+      color: #111;
+      transform: translateY(-2px);
+    }
+
+    .back-link {
+      margin-top: 40px;
+      font-size: 0.95rem;
+    }
+
+    .back-link a {
+      color: #ccc;
+      text-decoration: underline;
+      transition: color 0.2s ease;
+    }
+
+    .back-link a:hover {
+      color: #00f0ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="assets/photo.svg" alt="Workout Logo" class="logo" />
+    <h1>🏋️ Workout with FitBuddy</h1>
+    <p>Choose a goal below and get guided workouts tailored to your needs.</p>
+  </div>
+
+  <div class="workout-buttons">
+    <a href="build-muscle.html" class="btn">💪 Build Muscle</a>
+    <a href="burn-fat.html" class="btn">🔥 Burn Fat</a>
+    <a href="home-workouts.html" class="btn">🏠 Home Workouts</a>
+    <a href="cardio.html" class="btn">❤️ Cardio Endurance</a>
+  </div>
+
+  <div class="back-link">
+    <a href="chat-options.html">← Back to FitBuddy Options</a>
+  </div>
+</body>
+</html>

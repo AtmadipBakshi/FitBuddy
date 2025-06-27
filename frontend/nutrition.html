@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Nutrition | FitBuddy</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #1e1e2f, #2c2c3a);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .nutrition-container {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 0 15px rgba(250, 204, 21, 0.2);
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+    }
+
+    .nutrition-form {
+      flex: 1;
+    }
+
+    .nutrition-form input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .nutrition-form button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      background-color: #facc15;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #111;
+      transition: background-color 0.3s ease;
+    }
+
+    .nutrition-form button:hover {
+      background-color: #ffcc00;
+    }
+
+    .nutrition-result {
+      flex: 1;
+      background-color: rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 20px;
+      overflow-wrap: break-word;
+    }
+
+    .nutrition-result h3 {
+      margin-top: 0;
+      color: #facc15;
+    }
+
+    @media (max-width: 768px) {
+      .nutrition-container {
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="nutrition-container">
+    <div class="nutrition-form">
+      <h2>Smart Nutrition</h2>
+      <input type="text" id="foodInput" placeholder="Enter food item (e.g. 2 eggs, 1 cup rice)" />
+      <button onclick="getNutrition()">Analyze</button>
+    </div>
+    <div class="nutrition-result" id="nutritionResult">
+      <h3>Nutrition Info</h3>
+      <p id="resultText">No data yet</p>
+    </div>
+  </div>
+
+  <script>
+    async function getNutrition() {
+      const food = document.getElementById("foodInput").value;
+      const resultDiv = document.getElementById("resultText");
+
+      if (!food) {
+        resultDiv.innerText = "Please enter a food item.";
+        return;
+      }
+
+      resultDiv.innerText = "Loading...";
+
+      const appId = "8b8aad24";
+      const apiKey = "67cc73e586a977712f1844becc4ece28";
+
+      const url = "https://trackapi.nutritionix.com/v2/natural/nutrients";
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-app-id": appId,
+          "x-app-key": apiKey,
+        },
+        body: JSON.stringify({ query: food })
+      });
+
+      if (!response.ok) {
+        resultDiv.innerText = "Error: Could not fetch data.";
+        return;
+      }
+
+      const data = await response.json();
+      if (data.foods && data.foods.length > 0) {
+        const f = data.foods[0];
+        resultDiv.innerHTML = `
+          <strong>${f.food_name}</strong><br>
+          Calories: ${f.nf_calories} kcal<br>
+          Protein: ${f.nf_protein} g<br>
+          Fat: ${f.nf_total_fat} g<br>
+          Carbs: ${f.nf_total_carbohydrate} g<br>
+          Serving Size: ${f.serving_qty} ${f.serving_unit}
+        `;
+      } else {
+        resultDiv.innerText = "No data found.";
+      }
+    }
+  </script>
+</body>
+</html>

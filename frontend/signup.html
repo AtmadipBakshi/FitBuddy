@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up | FitBuddy</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #1e1e2f, #2c2c3a);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    body.light-mode {
+      background: linear-gradient(to right, #f9f9f9, #e0e0e0);
+      color: #111;
+    }
+
+    .signup-wrapper {
+      text-align: center;
+      padding: 40px 20px;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .signup-title {
+      font-size: 2.2rem;
+      color: #facc15;
+      margin-bottom: 10px;
+    }
+
+    .signup-subtitle {
+      color: #ccc;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #facc15;
+      color: #111;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #ffcc00;
+      transform: scale(1.02);
+    }
+
+    .link {
+      color: #facc15;
+      text-decoration: none;
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    /* Theme toggle button — FIXED! */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: 2px solid #facc15;
+      color: #facc15;
+      padding: 6px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      z-index: 1000;
+      width: auto;
+      height: auto;
+    }
+
+    .theme-toggle:focus {
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Corner theme toggle -->
+  <button class="theme-toggle" id="themeToggle">🌙</button>
+
+  <div class="signup-wrapper">
+    <h1 class="signup-title">Create a FitBuddy Account</h1>
+    <p class="signup-subtitle">Join us to get started</p>
+    <input type="text" id="signup-name" placeholder="Your Name" required />
+    <input type="email" id="signup-email" placeholder="Email" required />
+    <input type="password" id="signup-password" placeholder="Password" required />
+    <button onclick="signupUser()">Sign Up</button>
+    <a href="login.html" class="link">Already have an account? Login</a>
+  </div>
+
+  <script type="module" src="firebase-auth.js"></script>
+  <script>
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.body;
+
+    if (localStorage.getItem("theme") === "light") {
+      body.classList.add("light-mode");
+      themeToggle.textContent = "☀️";
+    }
+
+    themeToggle.addEventListener("click", () => {
+      body.classList.toggle("light-mode");
+      const isLight = body.classList.contains("light-mode");
+      themeToggle.textContent = isLight ? "☀️" : "🌙";
+      localStorage.setItem("theme", isLight ? "light" : "dark");
+    });
+  </script>
+</body>
+</html>

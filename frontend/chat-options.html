@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitBuddy | Options</title>
+  <style>
+    :root {
+      --primary: #facc15;
+      --text-dark: #fff;
+      --text-light: #111;
+      --bg-dark: linear-gradient(to right, #1e1e2f, #2c2c3a);
+      --bg-light: linear-gradient(to right, #f9f9f9, #e0e0e0);
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-dark);
+      transition: background 0.4s ease, color 0.4s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 80px 20px 20px;
+    }
+
+    body.light-mode {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      padding: 6px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .options-container {
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      margin-top: 100px;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .logo {
+      width: 80px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 6px var(--primary));
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin: 10px 0;
+    }
+
+    p.subtitle {
+      color: #ccc;
+      margin-bottom: 25px;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 0 20px;
+    }
+
+    .options-list button {
+      padding: 14px;
+      font-size: 1rem;
+      background: var(--primary);
+      color: #111;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .options-list button:hover {
+      transform: scale(1.03);
+      background-color: #ffcc00;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    body.light-mode .options-list button {
+      background: var(--primary);
+      color: #111;
+    }
+
+    body.light-mode .options-list button:hover {
+      background-color: #ffde33;
+    }
+
+    .footer-note {
+      margin-top: 30px;
+      font-size: 0.85rem;
+      color: #999;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.6rem;
+      }
+
+      .options-list button {
+        font-size: 0.95rem;
+        padding: 12px;
+      }
+
+      .logo {
+        width: 65px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 🌗 Dark/Light Mode Toggle -->
+  <button class="theme-toggle" id="themeToggle">🌙</button>
+
+  <!-- 💪 Logo + Title -->
+  <div class="options-container">
+    <img src="assets/bot-logo.png" alt="FitBuddy Logo" class="logo" />
+    <h1>What do you need today?</h1>
+    <p class="subtitle">Select an option to get started</p>
+
+    <!-- ⚡ Option Buttons -->
+    <div class="options-list">
+      <button onclick="window.location.href='chatbot.html'">Ask Questions</button>
+      <button onclick="window.location.href='workout.html'">Workout Tips</button>
+      <button onclick="window.location.href='smart-nutrition.html'">Nutrition Help</button>
+      <button onclick="window.location.href='progress.html'">Track Progress</button>
+      <button onclick="window.location.href='motivation.html'">Motivation</button>
+    </div>
+
+    <p class="footer-note">You're doing great. Let's go!</p>
+  </div>
+
+  <!-- 🌗 Theme Toggle Script -->
+  <script>
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.body;
+    let darkMode = true;
+
+    if (localStorage.getItem("theme") === "light") {
+      body.classList.add("light-mode");
+      themeToggle.textContent = "☀️";
+      darkMode = false;
+    }
+
+    themeToggle.addEventListener("click", () => {
+      darkMode = !darkMode;
+      body.classList.toggle("light-mode");
+      themeToggle.textContent = darkMode ? "🌙" : "☀️";
+      localStorage.setItem("theme", darkMode ? "dark" : "light");
+    });
+  </script>
+</body>
+</html>
