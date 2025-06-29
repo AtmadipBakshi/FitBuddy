@@ -56,10 +56,10 @@ def chat():
 
 
 # -----------------------------
-# Nutritionix Smart Nutrition
+# Nutritionix Smart Nutrition (Renamed route here)
 # -----------------------------
-@app.route("/nutrition", methods=["POST"])
-def get_nutrition():
+@app.route("/analyze-meal", methods=["POST"])
+def analyze_meal():
     data = request.get_json()
     query = data.get("query", "")
 
