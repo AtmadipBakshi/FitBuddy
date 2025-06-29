@@ -4,11 +4,13 @@ import os
 from flask_cors import CORS
 from dotenv import load_dotenv
 
+# Load environment variables from .env (for local testing)
 load_dotenv()
+
 app = Flask(__name__)
 CORS(app)
 
-# Load API keys from .env
+# Secure API keys
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 NUTRITIONIX_APP_ID = os.getenv("NUTRITIONIX_APP_ID")
 NUTRITIONIX_API_KEY = os.getenv("NUTRITIONIX_API_KEY")
@@ -53,11 +55,11 @@ def chat():
     return jsonify({"response": reply})
 
 
-# ----------------------------------
-# Nutritionix Smart Nutrition Route
-# ----------------------------------
-@app.route("/analyze-meal", methods=["POST"])
-def analyze_meal():
+# -----------------------------
+# Nutritionix Smart Nutrition
+# -----------------------------
+@app.route("/nutrition", methods=["POST"])
+def get_nutrition():
     data = request.get_json()
     query = data.get("query", "")
 
@@ -67,16 +69,16 @@ def analyze_meal():
         "x-app-key": NUTRITIONIX_API_KEY,
         "Content-Type": "application/json"
     }
-    payload = { "query": query }
 
     try:
-        response = requests.post(url, headers=headers, json=payload)
+        response = requests.post(url, headers=headers, json={"query": query})
         response_data = response.json()
 
-        # Print raw response for debugging
-        print("🔍 Nutritionix Response:", response_data)
+        foods = response_data.get("foods", [])
+        if not foods:
+            return jsonify({"error": "No food data found."}), 404
 
-        food = response_data["foods"][0]
+        food = foods[0]
         return jsonify({
             "name": food["food_name"].title(),
             "calories": food["nf_calories"],
@@ -90,7 +92,7 @@ def analyze_meal():
 
 
 # ---------------------
-# Run the Flask server
+# Run Locally
 # ---------------------
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
