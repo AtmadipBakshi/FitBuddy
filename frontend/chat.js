@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showTyping();
 
     try {
-      const res = await fetch("http://localhost:5000/chat", {
+      const res = await fetch("https://fitbuddy-backend-lvl5.onrender.com/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMessage })
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const data = await res.json();
       removeTyping();
-      appendMessage(data.reply || "⚠️ Couldn't understand that.", "bot");
+      appendMessage(data.response || "⚠️ Couldn't understand that.", "bot");
     } catch (err) {
       removeTyping();
       appendMessage("❌ Error reaching FitBuddy's brain.", "bot");
