@@ -59,7 +59,7 @@
         });
 
         const data = await response.json();
-        botMsg.innerText = data.reply || "Sorry, I didn’t get that.";
+        botMsg.innerText = data.response || "Sorry, I didn’t get that."; // ✅ fixed
       } catch (error) {
         botMsg.innerText = "Error contacting the bot.";
       }
