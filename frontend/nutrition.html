@@ -82,12 +82,12 @@
 </head>
 <body>
   <div class="nutrition-container">
-    <div class="nutrition-form">
-      <h2>Smart Nutrition</h2>
-      <input type="text" id="foodInput" placeholder="Enter food item (e.g. 2 eggs, 1 cup rice)" />
-      <button onclick="getNutrition()">Analyze</button>
-    </div>
-    <div class="nutrition-result" id="nutritionResult">
+    <form class="nutrition-form" id="nutrition-form">
+    <h2>Smart Nutrition</h2>
+    <input type="text" id="food-input" placeholder="Enter food item (e.g. 2 eggs, 1 cup rice)" required />
+    <button type="submit">Analyze</button>
+  </form>
+  <div class="nutrition-result" id="nutritionResult">
       <h3>Nutrition Info</h3>
       <p id="resultText">No data yet</p>
     </div>
