@@ -1,43 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("nutrition-form");
-  const resultBox = document.getElementById("nutrition-result");
+  const resultBox = document.getElementById("resultText");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const input = document.getElementById("food-input").value.trim();
 
-    if (input === "") {
-      resultBox.innerHTML = "<p>Please enter a food item.</p>";
-      return;
-    }
+    if (input === "") return;
 
-    resultBox.innerHTML = "<p>Loading...</p>";
+    resultBox.innerText = "Loading...";
 
     try {
-      const response = await fetch("https://fitbuddy-backend-lvl5.onrender.com/nutrition", {
+      const response = await fetch("https://fitbuddy-backend-lvl5.onrender.com/analyze-meal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: input })
       });
 
+      if (!response.ok) throw new Error("API error");
+
       const data = await response.json();
 
-      if (data.error) {
-        resultBox.innerHTML = `<p>${data.error}</p>`;
-      } else {
-        resultBox.innerHTML = `
-          <div class="food-item">
-            <h3>${data.name}</h3>
-            <p><strong>Calories:</strong> ${data.calories}</p>
-            <p><strong>Protein:</strong> ${data.protein} g</p>
-            <p><strong>Carbs:</strong> ${data.carbs} g</p>
-            <p><strong>Fat:</strong> ${data.fat} g</p>
-          </div>
-        `;
-      }
+      resultBox.innerHTML = `
+        <strong>${data.name}</strong><br>
+        Calories: ${data.calories} kcal<br>
+        Protein: ${data.protein} g<br>
+        Fat: ${data.fat} g<br>
+        Carbs: ${data.carbs} g
+      `;
 
     } catch (err) {
-      resultBox.innerHTML = "<p>Error fetching nutrition info. Try again later.</p>";
+      resultBox.innerText = "Error fetching nutrition info. Try again later.";
     }
   });
 });
